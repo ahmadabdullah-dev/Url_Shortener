@@ -11,7 +11,13 @@ public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-       
+
+        builder.Entity<AppUser>(entity =>
+        {
+            entity.Property(u => u.FirstName).IsRequired();
+            entity.Property(u => u.LastName).IsRequired();
+        });
+
         builder.Entity<Url>()
           .HasIndex(u => u.ShortCode)
           .IsUnique();
