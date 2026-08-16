@@ -3,6 +3,7 @@ import App from "../components/App";
 import Dashboard from "../components/Dashboard";
 import ErrorPage from "../../features/error/ErrorPage";
 import NotFound from "../../features/error/NotFound";
+import LoginForm from "../../features/auth/LoginForm";
 
 
 export const routes = createBrowserRouter([
@@ -12,7 +13,8 @@ export const routes = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <Navigate to="/dashboard" replace /> },
-  
+
+      { path: "login", element: <LoginForm /> },
       { path: "dashboard", element: <Dashboard /> },
     ],
   },
