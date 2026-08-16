@@ -18,6 +18,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+await app.Services.SeedDataAsync();
+
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
