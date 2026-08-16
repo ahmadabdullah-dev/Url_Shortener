@@ -1,3 +1,5 @@
 <Solution>
   <Project Path="API/API.csproj" />
+  <Project Path="Business/Business.csproj" Id="0d11d37b-34e8-48d7-aefe-88d8aad12723" />
+  <Project Path="DataAccess/DataAccess.csproj" Id="b121bbf0-c1e2-4429-b4ac-1aa79f97b365" />
 </Solution>
