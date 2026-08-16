@@ -4,6 +4,7 @@ import Dashboard from "../components/Dashboard";
 import ErrorPage from "../../features/error/ErrorPage";
 import NotFound from "../../features/error/NotFound";
 import LoginForm from "../../features/auth/LoginForm";
+import RegisterForm from "../../features/auth/RegisterForm";
 
 
 export const routes = createBrowserRouter([
@@ -16,6 +17,7 @@ export const routes = createBrowserRouter([
 
       { path: "login", element: <LoginForm /> },
       { path: "dashboard", element: <Dashboard /> },
+      { path: "register", element: <RegisterForm/> },
     ],
   },
   { path: "*", element: <NotFound /> },

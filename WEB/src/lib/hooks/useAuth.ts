@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import type { LoginDto } from "../types/auth";
+import type { LoginDto, RegisterDto } from "../types/auth";
 import agent from "../api/agent";
 import { useNavigate } from "react-router";
 
@@ -17,17 +17,25 @@ export const useAuth = () => {
       navigate("/dashboard");
     },
   });
-   const logoutAsync = useMutation({
-     mutationFn: async () => {
-       await agent.post("/auth/logout");
-     },
-     onSuccess: async () => {
-       await queryClient.removeQueries({ queryKey: ["currentUser"] });
-       navigate("/login");
-     },
-   });
+  const logoutAsync = useMutation({
+    mutationFn: async () => {
+      await agent.post("/auth/logout");
+    },
+    onSuccess: async () => {
+      await queryClient.removeQueries({ queryKey: ["currentUser"] });
+      navigate("/login");
+    },
+  });
   return {
     loginAsync,
-    logoutAsync
+    logoutAsync,
   };
 };
+export function useRegisterUser() {
+  return useMutation({
+    mutationFn: async (creds: RegisterDto) => {
+      const response = await agent.post("/Auth/register", creds);
+      return response;
+    },
+  });
+}
