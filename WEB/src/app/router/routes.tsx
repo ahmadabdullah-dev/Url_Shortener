@@ -6,6 +6,7 @@ import NotFound from "../../features/error/NotFound";
 import LoginForm from "../../features/auth/LoginForm";
 import RegisterForm from "../../features/auth/RegisterForm";
 import RequireAuth from "./RequireAuth";
+import MyProfile from "../../features/user/MyProfile";
 
 export const routes = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ export const routes = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           { path: "dashboard", element: <Dashboard /> },
+          { path: "my-profile", element: <MyProfile /> },
         ],
       },
       { path: "login", element: <LoginForm /> },

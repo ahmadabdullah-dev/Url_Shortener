@@ -1,7 +1,7 @@
 export type UserDto = {
-    Id: string,
-    FirstName: string,
-    LastName: string,
-    Email: string,
-    Role: string
+    id: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+    role: string
 }
