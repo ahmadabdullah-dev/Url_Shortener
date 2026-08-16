@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAPI();
+builder.Services.AddBusiness();
 builder.Services.AddDataAccess(builder.Configuration);
 
 builder.Services.AddControllers();
