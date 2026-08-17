@@ -1,10 +1,13 @@
-﻿namespace Business.Services;
+﻿
+namespace Business.Services;
 public class UrlService : IUrlService
 {
     private readonly IUrlRepository _urlRepository;
     private readonly IUserService _userService;
+
     public UrlService(IUrlRepository urlRepository,
-        IUserService userService)
+        IUserService userService
+        )
     {
         _urlRepository = urlRepository;
         _userService = userService;
@@ -68,7 +71,6 @@ public class UrlService : IUrlService
         return Result<UrlDto>.Success(dto);
 
     }
- 
     public async Task<Result<PagedList<UrlDto>>> GetCurrentUserUrlsAsync(PaginationParams p)
     {
         var userId = _userService.GetCurrentUserId();
@@ -108,15 +110,5 @@ public class UrlService : IUrlService
 
         }
         throw new InvalidOperationException("Could not generate a unique short code. Try again.");
-    }
-
-    public async Task<Result<string>> RetrieveOriginalUrlFromShortCodeAsync(string ShortCode)
-    {
-        var originalUrl = await _urlRepository.RetrieveOriginalUrlFromShortCodeAsync(ShortCode);
-
-        if (originalUrl == null)
-            return Result<string>.Failure("Url not found", 404);
-
-        return Result<string>.Success(originalUrl);
     }
 }

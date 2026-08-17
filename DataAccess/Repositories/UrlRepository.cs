@@ -42,11 +42,5 @@ public class UrlRepository : IUrlRepository
        // Console.WriteLine(query.ToQueryString());
         return await PagedList<UrlProjection>.CreateAsync(query, p.Page, p.PageSize);
     }
-    public async Task<string?> RetrieveOriginalUrlFromShortCodeAsync(string shortCode)
-    {
-        return await _dbContext.Urls
-            .Where(x => x.ShortCode == shortCode)
-            .Select(x => x.LongUrl)
-            .SingleOrDefaultAsync();
-    }
+  
 }
