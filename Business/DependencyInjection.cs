@@ -12,6 +12,7 @@ public static class DependencyInjection
         services.AddScoped<DataSeeder>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IUrlService, UrlService>();
+        services.AddScoped<IClickService, ClickService>();
 
         services.Configure<EmailConfiguration>(configuration.GetSection("EmailConfiguration"));
 

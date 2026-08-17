@@ -32,6 +32,7 @@ namespace DataAccess
             .AddDefaultTokenProviders();
 
             services.AddScoped<IUrlRepository,UrlRepository>();
+            services.AddScoped<IClickRepository,ClickRepository>();
         
             services.AddDataProtection();
 
