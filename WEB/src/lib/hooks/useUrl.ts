@@ -35,17 +35,3 @@ export function useCurrentUserUrls(pagination: PaginationParams) {
     retry: false,
   });
 }
-export function useRetrieveOriginalUrlFromShortCodeAsync(shortCode: string) {
-  return useQuery({
-    queryKey: ["retrieve-original-url-from-short-code", shortCode],
-    queryFn: async () => {
-      const response = await agent.get<string>(
-        "Url/retrieve-original-url-from-short-code",
-        { params: { shortCode } }, 
-      );
-      return response.data;
-    },
-    enabled: !!shortCode,
-    retry: false,
-  });
-}

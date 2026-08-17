@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import { useParams } from "react-router";
-import { useRetrieveOriginalUrlFromShortCodeAsync } from "../../lib/hooks/useUrl";
+import { useGetUrlByShortCodeAsync } from "../../lib/hooks/useUrl";
 
 export default function RedirectToOriginalUrl() {
   const { shortCode } = useParams();
-  const url = useRetrieveOriginalUrlFromShortCodeAsync(shortCode ?? "");
+  const url = useGetUrlByShortCodeAsync(shortCode ?? "");
 
   useEffect(() => {
     if (url.data) {
-      window.location.href = url.data;
+      window.location.href = url.data.longUrl;
     }
   }, [url.data]);
 
