@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useCurrentUser } from "../../lib/hooks/useUser";
+import CurrentUserUrls from "../url/CurrentUserUrls";
 
 interface ProfileFieldProps {
   label: string;
@@ -96,6 +97,7 @@ export default function MyProfile() {
           <ProfileField label="Email" value={data.email} />
         </Box>      
       </Stack>
+      <CurrentUserUrls/>
     </Box>
   );
 }
