@@ -26,9 +26,26 @@ export function useCurrentUserUrls(pagination: PaginationParams) {
   return useQuery({
     queryKey: ["current-user-urls", pagination],
     queryFn: async () => {
-      const response = await agent.get<PaginatedList<UrlDto>>("Url/current-user-urls",{ params: pagination});
+      const response = await agent.get<PaginatedList<UrlDto>>(
+        "Url/current-user-urls",
+        { params: pagination },
+      );
       return response.data;
     },
+    retry: false,
+  });
+}
+export function useRetrieveOriginalUrlFromShortCodeAsync(shortCode: string) {
+  return useQuery({
+    queryKey: ["retrieve-original-url-from-short-code", shortCode],
+    queryFn: async () => {
+      const response = await agent.get<string>(
+        "Url/retrieve-original-url-from-short-code",
+        { params: { shortCode } }, 
+      );
+      return response.data;
+    },
+    enabled: !!shortCode,
     retry: false,
   });
 }

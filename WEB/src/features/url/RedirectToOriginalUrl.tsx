@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { Box, Typography, CircularProgress } from "@mui/material";
 import { useParams } from "react-router";
-import { useGetUrlByShortCodeAsync } from "../../lib/hooks/useUrl";
+import { useRetrieveOriginalUrlFromShortCodeAsync } from "../../lib/hooks/useUrl";
 
 export default function RedirectToOriginalUrl() {
   const { shortCode } = useParams();
-  const url = useGetUrlByShortCodeAsync(shortCode ?? "");
+  const url = useRetrieveOriginalUrlFromShortCodeAsync(shortCode ?? "");
 
   useEffect(() => {
-    if (url.data?.longUrl) {
-      window.location.href = url.data.longUrl;
+    if (url.data) {
+      window.location.href = url.data;
     }
   }, [url.data]);
 
@@ -29,7 +29,7 @@ export default function RedirectToOriginalUrl() {
     );
   }
 
-  if (url.isError || !url.data?.longUrl) {
+  if (url.isError || !url.data) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
         <Typography color="text.secondary">{url.error?.message}</Typography>
