@@ -49,6 +49,25 @@ public class UrlService : IUrlService
 
         return Result<string>.Success($"Short code created successfully. Code is: '{shortCode}'");
     }
+    public async Task<Result<UrlDto>> GetUrlByUrlShortCodeAsync(string shortCode)
+    {
+        var entity = await _urlRepository.GetUrlByUrlShortCodeAsync(shortCode);
+
+        if (entity == null)
+            return Result<UrlDto>.Failure("Url not found", 404);
+
+        var dto = new UrlDto
+        {
+            LongUrl = entity.LongUrl,
+            ShortCode = entity.ShortCode,
+            CreatedAt = entity.CreatedAt,
+            IsActive = entity.IsActive,
+            ExpiresAt = entity.ExpiresAt   
+        };
+
+        return Result<UrlDto>.Success(dto);
+
+    }
     private async Task<string> GenerateUniqueUrlShortCodeAsync()
     {
         for (int attempted = 0; attempted < 5; attempted++)

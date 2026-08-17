@@ -17,4 +17,10 @@ public class UrlController : BaseApiController
         var result = await _urlService.CreateUrlShortCodeAsync(dto);
         return HandleResult(result);
     }
+    [HttpGet("short-code")]
+    public async Task<IActionResult> GetUrlByUrlShortCode(string shortCode)
+    {
+        var result = await _urlService.GetUrlByUrlShortCodeAsync(shortCode);
+        return HandleResult(result);
+    }
 }

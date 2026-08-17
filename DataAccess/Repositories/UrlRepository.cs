@@ -20,4 +20,8 @@ public class UrlRepository : IUrlRepository
         return await _dbContext.Urls.AnyAsync
             (u => u.ShortCode == shortCode);
     }
+    public async Task<Url?> GetUrlByUrlShortCodeAsync(string shortCode)
+    {
+        return await _dbContext.Urls.SingleOrDefaultAsync(u => u.ShortCode == shortCode);
+    }
 }
