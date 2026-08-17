@@ -6,3 +6,4 @@ global using DataAccess;
 global using DataAccess.Entities;
 global using Business.Common.Configurations;
 global using DataAccess.Interfaces;
+global using DataAccess.Common;

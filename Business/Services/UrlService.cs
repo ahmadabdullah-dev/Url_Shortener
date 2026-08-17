@@ -68,6 +68,35 @@ public class UrlService : IUrlService
         return Result<UrlDto>.Success(dto);
 
     }
+ 
+    public async Task<Result<PagedList<UrlDto>>> GetCurrentUserUrlsAsync(PaginationParams p)
+    {
+        var userId = _userService.GetCurrentUserId();
+        
+        if (userId == null)
+            return Result<PagedList<UrlDto>>.Failure("Unauthorized", 401);
+
+        var urls = await _urlRepository.GetUrlsByUserIdAsync(p, userId);
+        var dtos = new PagedList<UrlDto>
+        {
+            Items = urls.Items.Select(x => new UrlDto
+            {
+                ShortCode = x.ShortCode,
+                LongUrl = x.LongUrl,
+                IsActive = x.IsActive,
+                CreatedAt = x.CreatedAt,
+                ExpiresAt = x.ExpiresAt
+
+
+            }).ToList(),
+
+            CurrentPage = urls.CurrentPage,
+            TotalCount = urls.TotalCount,
+            TotalPages = urls.TotalPages
+
+        };
+       return Result<PagedList<UrlDto>>.Success(dtos);   
+    }
     private async Task<string> GenerateUniqueUrlShortCodeAsync()
     {
         for (int attempted = 0; attempted < 5; attempted++)

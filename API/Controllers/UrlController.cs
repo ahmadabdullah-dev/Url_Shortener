@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using DataAccess.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,6 +22,12 @@ public class UrlController : BaseApiController
     public async Task<IActionResult> GetUrlByUrlShortCode(string shortCode)
     {
         var result = await _urlService.GetUrlByUrlShortCodeAsync(shortCode);
+        return HandleResult(result);
+    }
+    [HttpGet("current-user-urls")]
+    public async Task<IActionResult> GetCurrentUserUrls([FromQuery] PaginationParams p)
+    {
+        var result = await _urlService.GetCurrentUserUrlsAsync(p);
         return HandleResult(result);
     }
 }

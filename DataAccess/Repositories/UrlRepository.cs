@@ -24,4 +24,23 @@ public class UrlRepository : IUrlRepository
     {
         return await _dbContext.Urls.SingleOrDefaultAsync(u => u.ShortCode == shortCode);
     }
+    public async Task<PagedList<UrlProjection>> GetUrlsByUserIdAsync(PaginationParams p, string userId)
+    {
+        var query = _dbContext.Urls
+            .AsNoTracking()
+            .Select(x => new UrlProjection
+            {
+           
+                ShortCode = x.ShortCode,
+                LongUrl = x.LongUrl,  
+                IsActive = x.IsActive,
+                CreatedAt = x.CreatedAt,
+                ExpiresAt = x.ExpiresAt,
+
+            });
+
+        Console.WriteLine(query.ToQueryString());
+        return await PagedList<UrlProjection>.CreateAsync(query, p.Page, p.PageSize);
+
+    }
 }
