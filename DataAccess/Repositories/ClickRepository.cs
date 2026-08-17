@@ -1,4 +1,6 @@
-﻿namespace DataAccess.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DataAccess.Repositories;
 
 public class ClickRepository : IClickRepository
 {
@@ -11,5 +13,9 @@ public class ClickRepository : IClickRepository
     {
         await _dbContext.Clicks.AddAsync(click);
         await _dbContext.SaveChangesAsync();
+    }
+    public async Task<int> GetClicksCountAsync(string urlId)
+    {
+       return await _dbContext.Clicks.Where(x => x.UrlId == urlId ).CountAsync();
     }
 }

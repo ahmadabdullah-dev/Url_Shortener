@@ -17,4 +17,8 @@ public class ClickService : IClickService
 
         await _clickRepository.AddAsync(click);
     }
+    public async Task<int> GetClicksCountAsync(string urlId)
+    {
+      return await _clickRepository.GetClicksCountAsync(urlId);
+    }
 }
