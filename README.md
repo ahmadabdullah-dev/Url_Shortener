@@ -9,10 +9,12 @@
 
 ### Common
 - `Result<T> Pattern`: Wraps success/failure state with data or error details, avoiding exception-based flow.
+- `PagedList`: Used to retrieve data from the database efficiently, applying pagination based on `PaginationParams`.
 
 ### Url 
 - `CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)`: creates a code of 5 digit and add to db.
 - `GetUrlByUrlShortCodeAsync(string shortCode)`: Retrives a UrlDto after finding Url by shortCode
+- `GeCurrentUserUrls(PaginationParams)`: Retrieves current user urls with in pagedList
 
 ### User 
 - `GetCurrentUserAsync()`: Retrieves the current user by getting the user ID from `IHttpContextAccessor`.
@@ -37,6 +39,7 @@
 - `CreateUrlShortCodeForm()`: Creating a url short code component.
 - `ReadUrlByShortCodeForm()`: Provides a search button and text field. If success shows the Url Information.
 - `RedirectToOriginalUrl()`: Takes a short code parameter from the route then redirect to original url
+- `CurrentUserUrls()`: Shows the current user urls in pagedList
 
 ### Error
 - `NotFound`: Shown when the user enters an invalid URL, handled via React Router.
