@@ -1,7 +1,4 @@
-﻿using DataAccess.Common;
-using DataAccess.Projections;
-
-namespace DataAccess.Interfaces;
+﻿namespace DataAccess.Interfaces;
 
 public interface IUrlRepository
 {
@@ -9,5 +6,5 @@ public interface IUrlRepository
     Task<bool> IsUrlShortCodeExistsAsync(string shortCode);
     Task<Url?> GetUrlByUrlShortCodeAsync(string shortCode);
     Task<PagedList<UrlProjection>> GetUrlsByUserIdAsync(PaginationParams p, string userId);
-
+    Task<string?> RetrieveOriginalUrlFromShortCodeAsync (string shortCode); 
 }
