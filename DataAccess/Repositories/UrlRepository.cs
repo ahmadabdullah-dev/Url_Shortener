@@ -42,5 +42,14 @@ public class UrlRepository : IUrlRepository
        // Console.WriteLine(query.ToQueryString());
         return await PagedList<UrlProjection>.CreateAsync(query, p.Page, p.PageSize);
     }
-  
+
+    public async Task<(string UrlId, string LongUrl)?> GetUrlIdAndLongUrlByShortCodeAsync(string shortCode)
+    {
+        var result = await _dbContext.Urls
+            .Where(x => x.ShortCode == shortCode)
+            .Select(x => new { x.UrlId, x.LongUrl })
+            .SingleOrDefaultAsync();
+
+        return result == null ? null : (result.UrlId, result.LongUrl);
+    }
 }

@@ -31,4 +31,10 @@ public class UrlController : BaseApiController
         var result = await _urlService.GetCurrentUserUrlsAsync(p);
         return HandleResult(result);
     }
+    [HttpGet("redirect-by-short-code")]
+    public async Task<IActionResult> RedirectFromRouteAsync(string shortCode)
+    { 
+        var result = await _urlService.RedirectFromRouteAsync(shortCode);
+        return HandleResult(result);
+    }
 }

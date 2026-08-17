@@ -1,19 +1,23 @@
-﻿namespace Business.Services;
+﻿using Microsoft.Extensions.Logging;
+
+namespace Business.Services;
 public class UrlService : IUrlService
 {
     private readonly IUrlRepository _urlRepository;
     private readonly IUserService _userService;
     private readonly IClickService _clickService;
-
+    private ILogger<UrlService> _logger;
 
     public UrlService(IUrlRepository urlRepository,
         IUserService userService,
-        IClickService clickService
+        IClickService clickService,
+        ILogger<UrlService> logger
         )
     {
         _urlRepository = urlRepository;
         _userService = userService;
         _clickService = clickService;
+        _logger = logger;
     }
     public async Task<Result<string>> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)
     {
@@ -62,19 +66,19 @@ public class UrlService : IUrlService
         if (entity == null)
             return Result<UrlDto>.Failure("Url not found", 404);
 
+        int clicksCount = await _clickService.GetClicksCountAsync(entity.UrlId);
+
         var dto = new UrlDto
         {
             LongUrl = entity.LongUrl,
             ShortCode = entity.ShortCode,
             CreatedAt = entity.CreatedAt,
             IsActive = entity.IsActive,
-            ExpiresAt = entity.ExpiresAt   
+            ExpiresAt = entity.ExpiresAt,
+            ClickCount =  clicksCount
         };
-
-        await _clickService.AddClickAsync(entity.UrlId);
         
         return Result<UrlDto>.Success(dto);
-
     }
     public async Task<Result<PagedList<UrlDto>>> GetCurrentUserUrlsAsync(PaginationParams p)
     {
@@ -104,6 +108,26 @@ public class UrlService : IUrlService
         };
        return Result<PagedList<UrlDto>>.Success(dtos);   
     }
+    public async Task<Result<string>> RedirectFromRouteAsync(string shortCode)
+    {
+        var result = await _urlRepository.GetUrlIdAndLongUrlByShortCodeAsync(shortCode);
+
+        if (result == null)
+            return Result<string>.Failure("Url not found", 404);
+
+        var (urlId, longUrl) = result.Value;
+
+        try
+        {
+            await _clickService.AddClickAsync(urlId); 
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, $"Failed to record click for {shortCode}");
+        }
+
+        return Result<string>.Success(longUrl);
+    }
     private async Task<string> GenerateUniqueUrlShortCodeAsync()
     {
         for (int attempted = 0; attempted < 5; attempted++)
@@ -116,4 +140,6 @@ public class UrlService : IUrlService
         }
         throw new InvalidOperationException("Could not generate a unique short code. Try again.");
     }
+
+
 }

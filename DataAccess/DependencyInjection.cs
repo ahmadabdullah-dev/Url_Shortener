@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccess
 {
@@ -11,7 +12,8 @@ namespace DataAccess
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection"));
+                opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                .LogTo(Console.WriteLine, LogLevel.Information).EnableSensitiveDataLogging(); 
             });
 
             services.AddIdentity<AppUser, IdentityRole>(options =>
