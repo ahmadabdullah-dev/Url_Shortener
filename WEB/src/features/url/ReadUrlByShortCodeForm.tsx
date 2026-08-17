@@ -27,7 +27,7 @@ export default function ReadUrlByShortCodeForm() {
   return (
     <div style={{ maxWidth: 480, margin: "32px auto" }}>
       <Typography variant="h5" gutterBottom>
-        Find a URL
+        Find a URL information
       </Typography>
 
       <Stack sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
