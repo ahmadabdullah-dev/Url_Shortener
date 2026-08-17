@@ -30,6 +30,8 @@ namespace DataAccess
             })
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+
+            services.AddScoped<IUrlRepository,UrlRepository>();
         
             services.AddDataProtection();
 
