@@ -16,7 +16,7 @@ public class UrlService : IUrlService
         if (currentUserId == null)
             return Result<string>.Failure("Unauthorized", 403);
 
-        if (ServiceHelper.IsUrl(dto.LongUrl))
+        if (!ServiceHelper.IsUrl(dto.LongUrl))
             return Result<string>.Failure("Invalid URL", 409);
 
         string shortCode;
