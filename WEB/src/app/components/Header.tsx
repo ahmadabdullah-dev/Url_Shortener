@@ -12,9 +12,7 @@ import { useEffect, useState } from "react";
 
 const NAV_LINKS = [
   { label: "Dashboard", href: "/dashboard" },
-  { label: "Create", href: "/create-url-short-code"},
   { label: "My Profile", href: "/my-profile"}
-
 ];
 
 export default function Header() {
