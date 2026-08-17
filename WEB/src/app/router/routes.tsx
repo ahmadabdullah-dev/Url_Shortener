@@ -7,6 +7,7 @@ import LoginForm from "../../features/auth/LoginForm";
 import RegisterForm from "../../features/auth/RegisterForm";
 import RequireAuth from "./RequireAuth";
 import MyProfile from "../../features/user/MyProfile";
+import CreateUrlShortCodeForm from "../../features/url/CreateUrlShortCodeForm";
 
 export const routes = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ export const routes = createBrowserRouter([
         children: [
           { path: "dashboard", element: <Dashboard /> },
           { path: "my-profile", element: <MyProfile /> },
+          {path: "create-url-short-code", element: <CreateUrlShortCodeForm/> }
         ],
       },
       { path: "login", element: <LoginForm /> },
