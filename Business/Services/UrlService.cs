@@ -1,16 +1,19 @@
-﻿
-namespace Business.Services;
+﻿namespace Business.Services;
 public class UrlService : IUrlService
 {
     private readonly IUrlRepository _urlRepository;
     private readonly IUserService _userService;
+    private readonly IClickService _clickService;
+
 
     public UrlService(IUrlRepository urlRepository,
-        IUserService userService
+        IUserService userService,
+        IClickService clickService
         )
     {
         _urlRepository = urlRepository;
         _userService = userService;
+        _clickService = clickService;
     }
     public async Task<Result<string>> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)
     {
@@ -68,6 +71,8 @@ public class UrlService : IUrlService
             ExpiresAt = entity.ExpiresAt   
         };
 
+        await _clickService.AddClickAsync(entity.UrlId);
+        
         return Result<UrlDto>.Success(dto);
 
     }
