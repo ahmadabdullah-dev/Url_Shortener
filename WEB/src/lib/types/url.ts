@@ -9,4 +9,5 @@ export type UrlDto = {
   isActive: boolean;
   expiresAt: string;
   createdAt: string
+  clickCount: string
 };

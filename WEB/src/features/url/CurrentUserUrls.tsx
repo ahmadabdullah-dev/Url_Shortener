@@ -103,6 +103,9 @@ export default function CurrentUserUrls() {
                   <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     Expires: {Shared.formatDate(u.expiresAt)}
                   </Typography>
+                  <Typography variant="body2" sx={{ color: "text.secondary" }}>
+                    Clicks: {u.clickCount}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>

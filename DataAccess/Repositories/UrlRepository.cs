@@ -28,18 +28,18 @@ public class UrlRepository : IUrlRepository
     {
         var query = _dbContext.Urls
             .AsNoTracking()
+            .Where(x => x.UserId == userId)
             .Select(x => new UrlProjection
             {
-           
+                UrlId = x.UrlId,
                 ShortCode = x.ShortCode,
-                LongUrl = x.LongUrl,  
+                LongUrl = x.LongUrl,
                 IsActive = x.IsActive,
                 CreatedAt = x.CreatedAt,
                 ExpiresAt = x.ExpiresAt,
-
+                ClickCount = x.Cliks.Count()
             });
 
-       // Console.WriteLine(query.ToQueryString());
         return await PagedList<UrlProjection>.CreateAsync(query, p.Page, p.PageSize);
     }
 

@@ -75,7 +75,6 @@ public class UrlService : IUrlService
             CreatedAt = entity.CreatedAt,
             IsActive = entity.IsActive,
             ExpiresAt = entity.ExpiresAt,
-            ClickCount =  clicksCount
         };
         
         return Result<UrlDto>.Success(dto);
@@ -88,6 +87,7 @@ public class UrlService : IUrlService
             return Result<PagedList<UrlDto>>.Failure("Unauthorized", 401);
 
         var urls = await _urlRepository.GetUrlsByUserIdAsync(p, userId);
+        
         var dtos = new PagedList<UrlDto>
         {
             Items = urls.Items.Select(x => new UrlDto
@@ -96,8 +96,8 @@ public class UrlService : IUrlService
                 LongUrl = x.LongUrl,
                 IsActive = x.IsActive,
                 CreatedAt = x.CreatedAt,
-                ExpiresAt = x.ExpiresAt
-
+                ExpiresAt = x.ExpiresAt,
+                ClickCount = x.ClickCount
 
             }).ToList(),
 
