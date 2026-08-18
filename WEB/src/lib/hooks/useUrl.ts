@@ -35,3 +35,16 @@ export function useCurrentUserUrls(pagination: PaginationParams) {
     retry: false,
   });
 }
+export function useRedirectFromRouteAsync(shortCode: string) {
+  return useQuery({
+    queryKey: [shortCode],
+    queryFn: async () => {
+      const response = await agent.get<string>("Url/redirect-by-short-code", {
+        params: { shortCode },
+      });
+      return response.data;
+    },
+    enabled: !!shortCode,
+    retry: false,
+  });
+}
