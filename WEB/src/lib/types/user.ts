@@ -3,5 +3,6 @@ export type UserDto = {
     firstName: string,
     lastName: string,
     email: string,
+    isEmailConfirmed: boolean,
     role: string
 }
