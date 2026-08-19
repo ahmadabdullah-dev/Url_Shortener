@@ -56,7 +56,7 @@ export default function ReadUrlByShortCodeForm() {
       )}
 
       {getUrl.isError && (
-        <Alert severity="error">Couldn't find that short code.</Alert>
+        <Alert severity="error">{getUrl.error.message}</Alert>
       )}
 
       {getUrl.data && (

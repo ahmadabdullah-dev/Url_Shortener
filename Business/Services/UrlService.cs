@@ -69,7 +69,7 @@ public class UrlService : IUrlService
         if (currentUser.Value == null)
             return Result<UrlDto>.Failure("Unauthorized", 401);
 
-        if (currentUser.Value.IsEmailConfirmed)
+        if (!currentUser.Value.IsEmailConfirmed)
             return Result<UrlDto>.Failure("Please confirm your email",401);
 
         var entity = await _urlRepository.GetUrlByUrlShortCodeAsync(shortCode);
@@ -151,6 +151,4 @@ public class UrlService : IUrlService
         }
         throw new InvalidOperationException("Could not generate a unique short code. Try again.");
     }
-
-
 }
