@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Business.Services;
 
@@ -9,18 +10,21 @@ public class AuthService : IAuthService
     private readonly ApplicationDbContext _dbContext;
     private readonly IEmailService _emailService;
     private readonly IUserService _userService;
+    private readonly ILogger<AuthService> _logger;  
 
     public AuthService(SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
         IEmailService emailService,
         ApplicationDbContext dbContext,
-        IUserService userService)
+        IUserService userService,
+        ILogger<AuthService> logger)
     {
         _signInManager = signInManager;
         _userManager = userManager;
         _dbContext = dbContext;
         _emailService = emailService;
         _userService = userService;
+        _logger = logger;
     }
     public async Task<Result<string>> LoginAsync(LoginDto dto)
     {
@@ -134,7 +138,8 @@ public class AuthService : IAuthService
         }
         catch (Exception ex)
         {
-            return Result<string>.Failure(ex.Message, 400);
+            _logger.LogError(ex.Message);
+            return Result<string>.Failure("Unexpected error happened while resending email confirmation code", 400);
         }
 
         return Result<string>.Success("Email Confirmation code has been resent successfully");
@@ -146,8 +151,15 @@ public class AuthService : IAuthService
 
         if (user == null)
             return Result<string>.Failure("User not found", 404);
-
-        await _emailService.SendCodeAsync(user, "Reset Password", EmailPurposes.PASSWORD_RESET);
+        try
+        {
+            await _emailService.SendCodeAsync(user, "Reset Password", EmailPurposes.PASSWORD_RESET);
+        }
+        catch (Exception ex) 
+        {
+            _logger.LogError(ex.Message);
+            return Result<string>.Failure("Unexpected error happened while sending Password reset code",400);
+        }
 
         return Result<string>.Success("Reset code sent successfully.");
     }
