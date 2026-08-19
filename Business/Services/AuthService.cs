@@ -140,4 +140,47 @@ public class AuthService : IAuthService
         return Result<string>.Success("Email Confirmation code has been resent successfully");
 
     }
+    public async Task<Result<string>> ForgetPasswordAsync(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
+            return Result<string>.Failure("User not found", 404);
+
+        await _emailService.SendCodeAsync(user, "Reset Password", EmailPurposes.PASSWORD_RESET);
+
+        return Result<string>.Success("Reset code sent successfully.");
+    }
+    public async Task<Result<string>> ResetPasswordAsync(ResetPasswordDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user == null)
+            return Result<string>.Failure("Invalid or expired code.", 404);
+
+        var isValid = await _userManager.VerifyUserTokenAsync(
+            user, TokenOptions.DefaultEmailProvider, EmailPurposes.PASSWORD_RESET, dto.Code);
+
+        if (!isValid)
+            return Result<string>.Failure("Invalid or expired code.", 404);
+
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+
+        var removePasswordResult = await _userManager.RemovePasswordAsync(user);
+
+        if (!removePasswordResult.Succeeded)
+            return Result<string>.Failure(ServiceHelper.GetFirstError(removePasswordResult), 400);
+
+        var addPasswordResult = await _userManager.AddPasswordAsync(user, dto.NewPassword);
+
+        if (!addPasswordResult.Succeeded)
+            return Result<string>.Failure(ServiceHelper.GetFirstError(addPasswordResult), 400);
+
+        await _userManager.ResetAccessFailedCountAsync(user);
+        await _userManager.SetLockoutEndDateAsync(user, null);
+
+        await transaction.CommitAsync();
+
+        return Result<string>.Success("Password reset successfully.");
+    }
 }
