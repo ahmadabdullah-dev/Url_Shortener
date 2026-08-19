@@ -21,10 +21,13 @@ public class UrlService : IUrlService
     }
     public async Task<Result<string>> CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)
     {
-        var currentUserId = _userService.GetCurrentUserId();
+        var currentUser = await _userService.GetCurrentUserAsync();
+      
+        if (currentUser.Value == null)
+            return Result<string>.Failure("Unauthorized",401);
 
-        if (currentUserId == null)
-            return Result<string>.Failure("Unauthorized", 403);
+        if (!currentUser.Value.IsEmailConfirmed)
+            return Result<string>.Failure("Please confirm your email", 401);
 
         if (!ServiceHelper.IsUrl(dto.LongUrl))
             return Result<string>.Failure("Invalid URL", 409);
@@ -49,7 +52,7 @@ public class UrlService : IUrlService
         {
             ShortCode = shortCode,
             LongUrl = dto.LongUrl,
-            UserId = currentUserId,
+            UserId = currentUser.Value.Id,
             CreatedAt = DateTime.UtcNow,
             ExpiresAt = expiresAt,
             IsActive = true,
@@ -61,6 +64,14 @@ public class UrlService : IUrlService
     }
     public async Task<Result<UrlDto>> GetUrlByUrlShortCodeAsync(string shortCode)
     {
+        var currentUser = await _userService.GetCurrentUserAsync();
+        
+        if (currentUser.Value == null)
+            return Result<UrlDto>.Failure("Unauthorized", 401);
+
+        if (currentUser.Value.IsEmailConfirmed)
+            return Result<UrlDto>.Failure("Please confirm your email",401);
+
         var entity = await _urlRepository.GetUrlByUrlShortCodeAsync(shortCode);
 
         if (entity == null)
