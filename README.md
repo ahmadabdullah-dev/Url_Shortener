@@ -15,12 +15,17 @@
 - `CreateUrlShortCodeAsync(CreateUrlShortCodeDto dto)`: creates a code of 5 digit and add to db.
 - `GetUrlByUrlShortCodeAsync(string shortCode)`: Retrives a UrlDto after finding Url by shortCode
 - `GeCurrentUserUrls(PaginationParams)`: Retrieves current user urls with in pagedList
+- `RedirectFromRouteAsync(string shortCode)`: returns long url and add click count to url.
 
 ### User 
 - `GetCurrentUserAsync()`: Retrieves the current user by getting the user ID from `IHttpContextAccessor`.
 
 ### Data
 - `DataSeeder`: Seeds fake data for initial entities
+
+### Click
+- `AddClickAsync(string urlId)`: Add +1 click to url
+- `GetClicksCountAsync(string urlId)`: Returns the clicks count of an url
 ---
 ## Web Features
 
