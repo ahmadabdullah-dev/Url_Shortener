@@ -50,6 +50,7 @@ public class UserService : IUserService
             FirstName = user.FirstName!,
             LastName = user.LastName!,
             Email = user.Email!,
+            IsEmailConfirmed = user.EmailConfirmed,
             Role = role,
         };
         return Result<UserDto>.Success(dto);
