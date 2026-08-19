@@ -8,6 +8,8 @@ import RegisterForm from "../../features/auth/RegisterForm";
 import RequireAuth from "./RequireAuth";
 import MyProfile from "../../features/user/MyProfile";
 import RedirectToOriginalUrl from "../../features/url/RedirectToOriginalUrl";
+import ConfirmEmailForm from "../../features/auth/ConfirmEmailForm";
+import RequireConfirmedEmail from "./RequireCOnfirmedEmail";
 
 export const routes = createBrowserRouter([
   {
@@ -19,9 +21,15 @@ export const routes = createBrowserRouter([
       {
         element: <RequireAuth />,
         children: [
+          {
+            element: <RequireConfirmedEmail/>, 
+            children: [
           { path: "dashboard", element: <Dashboard /> },
           { path: "my-profile", element: <MyProfile /> },
-          { path: "/:shortCode", element: <RedirectToOriginalUrl/>}
+          ]},
+   
+          { path: "/:shortCode", element: <RedirectToOriginalUrl/>},
+          { path: "/confirm-email", element: <ConfirmEmailForm/>}
         ],
       },
       { path: "login", element: <LoginForm /> },
