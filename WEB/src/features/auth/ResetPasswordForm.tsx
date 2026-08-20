@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useAuth } from "../../lib/hooks/useAuth";
-import { useState } from "react";
+import { useResetPasswordAsync } from "../../lib/hooks/useAuth";
+import type { ResetPasswordDto } from "../../lib/types/auth";
 import {
   Box,
   Container,
@@ -8,49 +8,46 @@ import {
   Stack,
   TextField,
   Typography,
-  InputAdornment,
-  IconButton,
   CircularProgress,
   Button,
   Alert,
-  FormControlLabel,
-  Checkbox,
-  Link
+  IconButton,
+  InputAdornment,
+  Link,
 } from "@mui/material";
+import { useParams, useNavigate } from "react-router";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useNavigate } from "react-router";
-import type { LoginDto } from "../../lib/types/auth";
+import { useState } from "react";
 
-export default function LoginForm() {
-  const { loginAsync } = useAuth();
+export default function ResetPasswordForm() {
+  const resetPassword  = useResetPasswordAsync();
+  const { email } = useParams();
+  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const decodedEmail = decodeURIComponent(email!);
+
   const {
     register,
     handleSubmit,
     reset,
-    resetField,
     formState: { errors },
-  } = useForm<LoginDto>({
-    defaultValues: { Email: "", Password: "", IsPersistence: false },
+  } = useForm<ResetPasswordDto>({
+    defaultValues: { email: decodedEmail, newPassword: "", code: "" },
   });
-  const [showPassword, setShowPassword] = useState(false);
 
-  const onSubmit = (creds: LoginDto) => {
-    loginAsync.mutateAsync(creds, {
+  const onSubmit = (creds: ResetPasswordDto) => {
+    resetPassword.mutate(creds, {
       onSuccess: () => {
         reset();
-        navigate("/dashboard")
-      },
-      onError: () => {
-        resetField("Password");
       },
     });
   };
-  const navigate = useNavigate();
+
   return (
     <Container maxWidth="sm">
       <Box
         sx={{
-          minHeight: "100vh",
+          minHeight: "70vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -58,31 +55,30 @@ export default function LoginForm() {
       >
         <Paper sx={{ p: 4, width: "100%" }}>
           <Typography variant="h3" sx={{ m: 2, textAlign: "center" }}>
-            Login
+            Reset Password
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
             <Stack spacing={2}>
               <TextField
-                label="Email"
-                type="email"
+                label="Verification code"
                 fullWidth
-                {...register("Email", { required: "Email is required" })}
-                error={!!errors.Email}
-                helperText={errors.Email?.message}
+                {...register("code", { required: "Code is required" })}
+                error={!!errors.code}
+                helperText={errors.code?.message}
               />
               <TextField
                 label="Password"
                 type={showPassword ? "text" : "password"}
-                {...register("Password", {
+                {...register("newPassword", {
                   required: "Password is required",
                   minLength: {
-                    value: 8,
-                    message: "Password must be at least 8 characters",
+                    value: 6,
+                    message: "Password must be at least 6 characters",
                   },
                 })}
-                error={!!errors.Password}
-                helperText={errors.Password?.message}
+                error={!!errors.newPassword}
+                helperText={errors.newPassword?.message}
                 fullWidth
                 slotProps={{
                   input: {
@@ -102,40 +98,36 @@ export default function LoginForm() {
                   },
                 }}
               />
-              <FormControlLabel
-                control={<Checkbox {...register("IsPersistence")} />}
-                label="Remember me"
-              />
-              <Link
-                component="button"
-                type="button"
-                variant="body2"
-                onClick={() => navigate("/forget-password")}
-              >
-                Forgot password?
-              </Link>
               <Button
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={loginAsync.isPending}
+                disabled={resetPassword.isPending}
               >
-                {loginAsync.isPending ? (
+                {resetPassword.isPending ? (
                   <CircularProgress size={24} color="inherit" />
                 ) : (
-                  "Login"
+                  "Continue"
                 )}
               </Button>
-              {loginAsync.error && (
-                <Alert severity="error">{loginAsync.error.message}</Alert>
+              {resetPassword.data?.isSuccess && (
+                <Alert severity="success">
+                  {resetPassword.data.value}
+                </Alert>
               )}
-              <Button
-                variant="outlined"
-                fullWidth
-                onClick={() => navigate("/register")}
+              {resetPassword.error && (
+                <Alert severity="error">
+                  {resetPassword.error.message}
+                </Alert>
+              )}
+              <Link
+                component="button"
+                type="button"
+                variant="body2"
+                onClick={() => navigate("/login")}
               >
-                Don't have an account
-              </Button>
+                Back to login
+              </Link>
             </Stack>
           </Box>
         </Paper>

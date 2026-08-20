@@ -16,6 +16,7 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useForm } from "react-hook-form";
 import { useRegisterUser } from "../../lib/hooks/useAuth";
+import { useNavigate } from "react-router";
 export default function RegisterForm() {
   const registerUser = useRegisterUser();
   const {
@@ -37,6 +38,7 @@ export default function RegisterForm() {
       },
     });
   };
+  const navigate = useNavigate();
   return (
     <Container maxWidth="sm">
       <Box>
@@ -48,7 +50,7 @@ export default function RegisterForm() {
               textAlign: "center",
             }}
           >
-            Register Member
+            Register
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -77,8 +79,7 @@ export default function RegisterForm() {
                 error={!!errors.Email}
                 helperText={errors.Email?.message}
               />
-            
-            
+
               <TextField
                 label="Password"
                 type={showPassword ? "text" : "password"}
@@ -116,7 +117,7 @@ export default function RegisterForm() {
                 {registerUser.isPending ? (
                   <CircularProgress size={24} color="inherit" />
                 ) : (
-                  "Register Member"
+                  "Register"
                 )}
               </Button>
               {registerUser.isSuccess && (
@@ -125,6 +126,13 @@ export default function RegisterForm() {
               {registerUser.error && (
                 <Alert severity="error">{registerUser.error.message}</Alert>
               )}
+              <Button
+                variant="text"
+                sx={{ border: 2, m: 1, width: "100%" }}
+                onClick={() => navigate("/login")}
+              >
+                Already registered
+              </Button>
             </Stack>
           </Box>
         </Paper>

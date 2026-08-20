@@ -52,7 +52,7 @@ public class AuthController : BaseApiController
     public async Task<IActionResult> ForgetPassword(string email)
     {
         var result = await _authService.ForgetPasswordAsync(email);
-        return result.IsSuccess ? Ok(result) : BadRequest(result);
+        return HandleResult(result);
     }
     [HttpPost("reset-password")]
     public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)

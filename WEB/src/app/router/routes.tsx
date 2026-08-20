@@ -10,6 +10,8 @@ import MyProfile from "../../features/user/MyProfile";
 import RedirectToOriginalUrl from "../../features/url/RedirectToOriginalUrl";
 import ConfirmEmailForm from "../../features/auth/ConfirmEmailForm";
 import RequireConfirmedEmail from "./RequireCOnfirmedEmail";
+import ForgetPasswordForm from "../../features/auth/ForgetPassword";
+import ResetPasswordForm from "../../features/auth/ResetPasswordForm";
 
 export const routes = createBrowserRouter([
   {
@@ -22,18 +24,21 @@ export const routes = createBrowserRouter([
         element: <RequireAuth />,
         children: [
           {
-            element: <RequireConfirmedEmail/>, 
+            element: <RequireConfirmedEmail />,
             children: [
-          { path: "dashboard", element: <Dashboard /> },
-          { path: "my-profile", element: <MyProfile /> },
-          ]},
-   
-          { path: "/:shortCode", element: <RedirectToOriginalUrl/>},
-          { path: "/confirm-email", element: <ConfirmEmailForm/>}
+              { path: "dashboard", element: <Dashboard /> },
+              { path: "my-profile", element: <MyProfile /> },
+            ],
+          },
+
+          { path: "/:shortCode", element: <RedirectToOriginalUrl /> },
+          { path: "/confirm-email", element: <ConfirmEmailForm /> },
         ],
       },
       { path: "login", element: <LoginForm /> },
       { path: "register", element: <RegisterForm /> },
+      { path: "forget-password", element: <ForgetPasswordForm /> },
+      { path: "reset-password/:email", element: <ResetPasswordForm /> },
     ],
   },
   { path: "*", element: <NotFound /> },
