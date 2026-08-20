@@ -31,10 +31,10 @@ export const routes = createBrowserRouter([
             ],
           },
 
-          { path: "/:shortCode", element: <RedirectToOriginalUrl /> },
           { path: "/confirm-email", element: <ConfirmEmailForm /> },
         ],
-      },
+      },   
+      { path: "/:shortCode", element: <RedirectToOriginalUrl /> },
       { path: "login", element: <LoginForm /> },
       { path: "register", element: <RegisterForm /> },
       { path: "forget-password", element: <ForgetPasswordForm /> },

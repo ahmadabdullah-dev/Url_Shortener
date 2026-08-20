@@ -49,7 +49,6 @@ export default function ConfirmEmailForm() {
      },
    });
  };
-console.log(confirmEmailAsync.error);
 const handleResend = () => {
   resendEmailConfirmationCodeAsync.mutateAsync(undefined, {
     onSuccess: (res) => {

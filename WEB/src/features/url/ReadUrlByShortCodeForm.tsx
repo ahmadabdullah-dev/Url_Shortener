@@ -25,7 +25,7 @@ export default function ReadUrlByShortCodeForm() {
   };
 
   return (
-    <div style={{ maxWidth: 480, margin: "32px auto" }}>
+    <div style={{ margin: "32px" }}>
       <Typography variant="h5" gutterBottom>
         Find a URL information
       </Typography>
@@ -60,7 +60,7 @@ export default function ReadUrlByShortCodeForm() {
       )}
 
       {getUrl.data && (
-        <Card variant="outlined" sx={{ borderRadius: 2 }}>
+        <Card variant="outlined" sx={{ borderRadius: 2, mt:2}}>
           <CardContent>
             <Stack spacing={2}>
               <Box

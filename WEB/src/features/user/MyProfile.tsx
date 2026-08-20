@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { useCurrentUser } from "../../lib/hooks/useUser";
 import CurrentUserUrls from "../url/CurrentUserUrls";
+import LogoutButton from "../auth/LogoutButton";
 
 interface ProfileFieldProps {
   label: string;
@@ -32,7 +33,6 @@ export default function MyProfile() {
 
   const user = useCurrentUser();
 
-  console.log(user)
   if (user.isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
@@ -71,6 +71,9 @@ export default function MyProfile() {
         p: { xs: 2, sm: 4 },
       }}
     >
+      <Box sx={{display: "flex", flexDirection:"row-reverse", mb:5}}>
+      <LogoutButton/>
+      </Box>
       <Stack
         spacing={1.5}
         sx={{ alignItems: "center", textAlign: "center", mb: 4 }}
