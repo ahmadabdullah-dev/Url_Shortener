@@ -6,6 +6,10 @@
 - `LoginAsync(LoginDto dto)`: Authenticates the user via ASP.NET Identity, using `SignInManager` to sign in with a cookie.
 - `LogoutAsync()`: Signs the user out via ASP.NET Identity's `SignOutManager`.
 - `RegisterAsync(RegisterDto)`: Register a user, add to role, and send email confirmation link
+- `ConfirmEmailAsync(string code)`: Confirms the user email by the code that sent initially after creating account or after resending email confirmation code.
+- `ResendEmailConfirmationCodeAsync()`: resend email confirmation code again.
+- `ForgetPasswordAsync(string email)`: sends a resetPassword code to email.
+- `ResetPasswordAsync(ResetPasswordDto dto)`: Validates resetPassword Code. Then Update the current password.
 
 ### Common
 - `Result<T> Pattern`: Wraps success/failure state with data or error details, avoiding exception-based flow.
@@ -30,10 +34,14 @@
 ## Web Features
 
 ### Auth
-- `RequireAuth`: Guards authorized routes, preventing unauthenticated users from accessing them.
-- `LoginForm`: Takes email, password, and isPersistence, it sends them to the backend for validation. Navigates to the dashboard on success.
-- `LogoutButton`: Deletes the auth cookie from storage and navigates to the login page.
-
+- `RequireAuth()`: Guards authorized routes, preventing unauthenticated users from accessing them.
+- `LoginForm()`: Takes email, password, and isPersistence, it sends them to the backend for validation. Navigates to the dashboard on success.
+- `LogoutButton()`: Deletes the auth cookie from storage and navigates to the login page.
+- `RequireConfirmedEmail()`: Used as a wrapper for routes that required user to have confirmed email
+- `ConfirmEmailForm()`: Includes confirm email by code and resendEmailConfirmationCode button.
+-  `ForgetPasswordForm()`: Takes email from the user and navigate to resetPassword.
+-  `ResetPasswordForm()`: After successfully validation from ForgetPassword takes email parameter from it. Takes also verification code and new password.
+  
 ### App
 - `Header`: Uses a ready-made MUI template. Contains the navigation bar. Valid on large screens.
 - `TemporaryDrawer`: Uses a ready-made MUI template. Inherits navigation items from `Header`. Valid on small screens.
