@@ -60,7 +60,7 @@ export default function Header() {
             userSelect: "none",
           }}
         >
-          Url Shortner
+          Url Shortener
         </Typography>
 
         <Stack
